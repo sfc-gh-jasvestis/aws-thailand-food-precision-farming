@@ -10,7 +10,6 @@ Thailand's agricultural conglomerate manages 85 farms growing rice, sugarcane, a
 flowchart LR
     IOT[IoT Core] --> KIN[Kinesis]
     KIN --> SPS[Snowpipe Streaming]
-    SP --> RAW[RAW Tables]
     SPS --> RAW
     RAW --> DT[Dynamic Tables]
     DT --> ML[ML Functions]
