@@ -8,7 +8,7 @@ USE SCHEMA APP;
 CREATE OR REPLACE NOTIFICATION INTEGRATION aws_thailand_food_precision_farming_EMAIL_INT
   TYPE = EMAIL
   ENABLED = TRUE
-  ALLOWED_RECIPIENTS = ('jonathan.asvestis@snowflake.com');
+  ALLOWED_RECIPIENTS = ('<YOUR_EMAIL>');
 
 -- Alert: MOISTURE_STRESS_ALERT
 CREATE OR REPLACE ALERT APP.MOISTURE_STRESS_ALERT
@@ -22,7 +22,7 @@ IF (EXISTS (
 THEN
   CALL SYSTEM$SEND_EMAIL(
     'aws_thailand_food_precision_farming_EMAIL_INT',
-    'jonathan.asvestis@snowflake.com',
+    '<YOUR_EMAIL>',
     '[ALERT] Precision Farming & Crop Analytics: Critical moisture stress — irrigation needed immediately',
     'Critical moisture stress — irrigation needed immediately'
   );
@@ -41,7 +41,7 @@ IF (EXISTS (
 THEN
   CALL SYSTEM$SEND_EMAIL(
     'aws_thailand_food_precision_farming_EMAIL_INT',
-    'jonathan.asvestis@snowflake.com',
+    '<YOUR_EMAIL>',
     '[ALERT] Precision Farming & Crop Analytics: Crop disease detected with high confidence — agronomist review needed',
     'Crop disease detected with high confidence — agronomist review needed'
   );
