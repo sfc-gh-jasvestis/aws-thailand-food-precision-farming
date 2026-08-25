@@ -1,6 +1,6 @@
 -- ============================================================================
 -- 09_AWS_INTEGRATION.SQL — AWS services for Precision Farming & Crop Analytics
--- Account: 018437500440 | Region: ap-southeast-1
+-- Account: <YOUR_AWS_ACCOUNT_ID> | Region: ap-southeast-1
 -- Skip this script for Snowflake-only build
 -- ============================================================================
 USE DATABASE PRECISION_FARMING;
@@ -72,11 +72,11 @@ CREATE OR REPLACE EXTERNAL ACCESS INTEGRATION aws_thailand_food_precision_farmin
   ENABLED = TRUE
   COMMENT = 'SNS access for Precision Farming & Crop Analytics alerts';
 
--- SNS Topic ARN: arn:aws:sns:ap-southeast-1:018437500440:sea-demos-aws-thailand-food-precision-farming
+-- SNS Topic ARN: arn:aws:sns:ap-southeast-1:<YOUR_AWS_ACCOUNT_ID>:sea-demos-aws-thailand-food-precision-farming
 
 -- ==================== KINESIS / IOT CORE INGESTION ====================
 -- Snowpipe from Kinesis Data Stream
--- Stream ARN: arn:aws:kinesis:ap-southeast-1:018437500440:stream/aws-thailand-food-precision-farming-stream
+-- Stream ARN: arn:aws:kinesis:ap-southeast-1:<YOUR_AWS_ACCOUNT_ID>:stream/aws-thailand-food-precision-farming-stream
 
 CREATE OR REPLACE PIPE RAW.REALTIME_PIPE
   AUTO_INGEST = TRUE
