@@ -124,7 +124,7 @@ Industry research and Snowflake customer outcomes:
 - **Precision agriculture increases crop yields by 15-25% while reducing water and fertilizer use by 20-30%** — [McKinsey Agriculture](https://www.mckinsey.com/industries/agriculture/our-insights)
 - **AI-powered crop disease detection achieves 90%+ accuracy and detects outbreaks 7-14 days earlier** — [Nature Food](https://www.nature.com/natfood/)
 - **CP Group (Thailand) manages 400,000+ rai of integrated farms using smart agriculture technology** — [CP Group](https://www.cpgroupglobal.com/en)
-
+- **Kraft Heinz** (Snowflake customer): built a unified data platform on Snowflake powering supply chain and demand forecasting across 200+ brands -- [snowflake.com/customers/kraft-heinz](https://www.snowflake.com/en/customers/all-customers/case-study/kraft-heinz/)
 
 ## Key Demo Numbers
 
