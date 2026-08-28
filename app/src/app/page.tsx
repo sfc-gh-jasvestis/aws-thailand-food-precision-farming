@@ -134,11 +134,10 @@ export default function HomePage() {
           'Show water stress correlation with yield in Isaan',
           'What interventions give the best ROI for cassava?',
         ]}
-        mode="both"
-        onSubmit={async (question, mode) => {
+        onSubmit={async (question) => {
           return {
-            answer: `[Demo Mode] Response to: "${question}" (${mode} mode). Connect to Snowflake for live data.`,
-            sql: mode === 'sql' ? 'SELECT * FROM CURATED.SUMMARY LIMIT 10;' : undefined,
+            answer: `[Demo Mode] Response to: "${question}" Connect to Snowflake for live data.`,
+            sql: 'SELECT * FROM CURATED.SUMMARY LIMIT 10;',
           };
         }}
       />
