@@ -32,15 +32,22 @@ export default function HomePage() {
       .catch(() => {});
   }, []);
 
+
+  // KPI values come from /api/data, which reads CURATED.KPI_SUMMARY. The literal
+  // stays as a fallback so the card still renders if the API is unavailable.
+  const kpiVal = (title: string, fallback: string): string =>
+    (data?.kpiCards as { title: string; value: string }[] | undefined)
+      ?.find((k) => k.title === title)?.value ?? fallback;
+
   const title = narrative?.title || 'SEA AWS Demo';
 
   const executiveCockpit = (
     <div className="space-y-6">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <KPICard title="Yield Forecast" value="4.8 T/rai" status="neutral" />
-        <KPICard title="Water Stress Alerts" value="23" status="warning" />
-        <KPICard title="Pest Risk Zones" value="7" status="danger" />
-        <KPICard title="Monitored Farms" value="1,450" status="neutral" />
+        <KPICard title="Yield Forecast" value={kpiVal('Yield Forecast', '4.8 T/rai')} status="neutral" />
+        <KPICard title="Water Stress Alerts" value={kpiVal('Water Stress Alerts', '23')} status="warning" />
+        <KPICard title="Pest Risk Zones" value={kpiVal('Pest Risk Zones', '7')} status="danger" />
+        <KPICard title="Monitored Farms" value={kpiVal('Monitored Farms', '1,450')} status="neutral" />
       </div>
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <div className="lg:col-span-1">
@@ -87,9 +94,9 @@ export default function HomePage() {
   const domainTab1 = (
     <div className="space-y-6">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <KPICard title="Soil Moisture Avg" value="42%" />
-        <KPICard title="Fertilizer Efficiency" value="87%" />
-        <KPICard title="Days to Harvest" value="34" />
+        <KPICard title="Soil Moisture Avg" value={kpiVal('Soil Moisture Avg', '42%')} />
+        <KPICard title="Fertilizer Efficiency" value={kpiVal('Fertilizer Efficiency', '87%')} />
+        <KPICard title="Days to Harvest" value={kpiVal('Days to Harvest', '34')} />
       </div>
       <Chart
         data={data?.detail || [{ x: 'Mon', y: 24 }, { x: 'Tue', y: 28 }, { x: 'Wed', y: 22 }, { x: 'Thu', y: 31 }, { x: 'Fri', y: 26 }, { x: 'Sat', y: 19 }, { x: 'Sun', y: 23 }]}
