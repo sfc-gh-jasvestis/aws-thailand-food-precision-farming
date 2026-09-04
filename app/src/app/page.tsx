@@ -53,6 +53,7 @@ export default function HomePage() {
         <div className="lg:col-span-1">
           <GeoMap
             country="thailand"
+            labels={{ entity: 'Provinces', event: 'Sensor Readings', alert: 'Field Alerts' }}
             regions={data?.regions}
             markers={[{"label": "Nakhon Ratchasima", "value": "Cassava: 4.2 T/rai", "color": "green", "size": "lg"}, {"label": "Chiang Rai", "value": "Rice: PEST ALERT", "color": "red", "size": "md"}, {"label": "Udon Thani", "value": "Sugarcane: water stress", "color": "amber", "size": "md"}, {"label": "Khon Kaen", "value": "Cassava: 4.8 T/rai", "color": "green", "size": "md"}]}
             routes={[]}
@@ -83,8 +84,13 @@ export default function HomePage() {
         columns={[
           { key: 'id', header: '#' },
           { key: 'name', header: 'Province' },
+          { key: 'region', header: 'Region' },
           { key: 'status', header: 'Crop Health' },
-          { key: 'value', header: 'Yield (T/Rai)' },
+          { key: 'm1', header: 'Yield (T/Rai)' },
+          { key: 'm2', header: 'Pest Risk Zones' },
+          { key: 'm3', header: 'Soil Moisture' },
+          { key: 'events', header: 'Sensor Readings' },
+          { key: 'alerts', header: 'Field Alerts' },
         ]}
         data={data?.entities || []}
         title="Farm Performance by Province"
