@@ -53,6 +53,7 @@ export default function HomePage() {
         <div className="lg:col-span-1">
           <GeoMap
             country="thailand"
+            regions={data?.regions}
             markers={[{"label": "Nakhon Ratchasima", "value": "Cassava: 4.2 T/rai", "color": "green", "size": "lg"}, {"label": "Chiang Rai", "value": "Rice: PEST ALERT", "color": "red", "size": "md"}, {"label": "Udon Thani", "value": "Sugarcane: water stress", "color": "amber", "size": "md"}, {"label": "Khon Kaen", "value": "Cassava: 4.8 T/rai", "color": "green", "size": "md"}]}
             routes={[]}
             title="Geographic Overview"
