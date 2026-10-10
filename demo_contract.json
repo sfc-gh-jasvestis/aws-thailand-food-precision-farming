@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "repo": "aws-thailand-food-precision-farming",
+  "operation": "on-demand",
+  "data_classification": "synthetic demonstration only",
+  "currency": "USD",
+  "grains": {
+    "RAW.FIELDS": "one row per crop field",
+    "RAW.FIELD_DAILY": "one row per field per day (90 days)",
+    "RAW.SENSOR_COVERAGE": "one row per field (sensor mapping coverage snapshot)",
+    "CURATED.PERFORMANCE_SUMMARY": "one row per field",
+    "CURATED.TREND_ANALYSIS": "one row per day",
+    "CURATED.CROP_STRESS_CAUSES": "one row per root cause",
+    "CURATED.KPI_SUMMARY": "one row per KPI",
+    "ML.CROP_STRESS_RISK_SCORES": "one row per field (latest day)"
+  },
+  "metrics": {
+    "Plant Health Rate": "100 * SUM(HEALTHY_PLANTS) / SUM(PLANTS_SCOUTED)",
+    "Crop-Stress Events": "SUM(CROP_STRESS_COUNT)",
+    "Fertilizer Intensity": "SUM(FERTILIZER_KG) / SUM(HARVEST_TONNES) (kg per tonne harvested)",
+    "Crop Harvested (t)": "SUM(HARVEST_TONNES)",
+    "Sensor Network Uptime": "100 * SUM(OPERATING_HOURS) / SUM(PLANNED_HOURS)",
+    "Fields Monitored": "COUNT(RAW.FIELDS)",
+    "Sensor Mapping Coverage": "100 * SUM(LEAST(MAPPED_HA, FIELD_HA)) / SUM(FIELD_HA)",
+    "Pest Alerts": "SUM(PEST_ALERTS)"
+  },
+  "chart_bindings": {
+    "daily_plant_health_rate": [
+      "CURATED.TREND_ANALYSIS.METRIC_DATE",
+      "HEALTH_PCT"
+    ],
+    "stressed_plants_by_cause": [
+      "CURATED.CROP_STRESS_CAUSES.ROOT_CAUSE",
+      "STRESSED_PLANTS"
+    ],
+    "scouting_vs_plant_health_rate": [
+      "CURATED.PERFORMANCE_SUMMARY.SCOUTING_COMPLETION_PCT",
+      "HEALTH_PCT"
+    ],
+    "quicksight_crop_stress_risk": [
+      "ENTITY_ID",
+      "MAX(CROP_STRESS_PROB_7D)"
+    ]
+  },
+  "freshness": "MAX(EVENT_DATE) is an observation watermark; requestedAt is not freshness",
+  "required_capabilities": {
+    "core_pipeline": "Curated KPIs reconcile to a RAW recomputation (run_core.py checks this on every build)",
+    "crop_stress_risk_model": "Snowflake ML CLASSIFICATION of P(crop-stress event in next 7 days) per field, evaluated on an out-of-time holdout",
+    "forecast_and_anomaly": "14-day grower-wide crop harvest FORECAST; soil moisture deficit ANOMALY_DETECTION (train 75 days, detect last 15)",
+    "search": "Cortex Search SEARCH.AGRONOMY_SOP_SEARCH over synthetic crop-stress response SOPs (one per crop and cause)",
+    "semantic_analytics": "Semantic view APP.AGRONOMY_ANALYTICS and Cortex Agent APP.AGRONOMY_AGENT using analyst + search tools",
+    "grounded_ai": "Agent answers return generated SQL and SOP citations; the action memo uses only KPI, crop-stress, cause and risk rows",
+    "quicksight": "DIRECT_QUERY dashboard (fields with observations, daily plant health rate, crop-stress events by field, crop-stress risk, IoT message count) through a read-only Snowflake service user",
+    "quicksight_q": "Amazon Q topic over the curated datasets for natural-language questions",
+    "aws_ingestion": "IoT Core rule -> S3 -> Snowpipe AUTO_INGEST into RAW.LIVE_TELEMETRY",
+    "notifications": "APP.LIVE_ALARM_ALERT logs new ALARM readings to APP.ALERT_LOG and emails via SYSTEM$SEND_EMAIL; alert and tasks suspended between demos",
+    "orchestration": "Task graph APP.TASK_REFRESH_CURATED -> APP.TASK_RESCORE_RISK run on demand (EXECUTE TASK)",
+    "app_deployment": "SPCS service APP.TH_FOOD_PRECISION_FARMING_APP; routes /api/data, /api/ask, /api/agent"
+  },
+  "builds": {
+    "snowflake": {
+      "database": "THAILAND_FOOD_PRECISION_FARMING_SNOWFLAKE",
+      "app_setting": "DEMO_PLATFORM=snowflake",
+      "live_telemetry": "APP.SIMULATE_TELEMETRY(n)",
+      "memo": "Cortex AI_COMPLETE (claude-sonnet-4-5)"
+    },
+    "aws": {
+      "database": "THAILAND_FOOD_PRECISION_FARMING_AWS",
+      "app_setting": "DEMO_PLATFORM=aws",
+      "live_telemetry": "AWS IoT Core -> S3 -> Snowpipe",
+      "memo": "Amazon Bedrock Claude Sonnet 4.5 via APP.BEDROCK_GENERATE",
+      "capabilities": "see required_capabilities"
+    }
+  }
+}
